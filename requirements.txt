@@ -1,7 +1,6 @@
 fastapi
 uvicorn
-requests
-apscheduler
 motor
-pydantic[email]
+apscheduler
 python-dotenv
+requests

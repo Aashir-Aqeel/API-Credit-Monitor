@@ -1,41 +1,54 @@
 from fastapi import FastAPI
-from app.utils.email_utils import send_alert_email
-from app.utils.openai_utils import get_openai_usage
-import os
-from datetime import datetime
+from app.services.monitor import check_user_credits
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+import logging
+import sys
 
+# --------------------------
+# Logger setup
+# --------------------------
+logger = logging.getLogger("main")
+logger.setLevel(logging.INFO)
+if not logger.handlers:
+    # Console handler with UTF-8 encoding
+    ch = logging.StreamHandler(sys.stdout)
+    ch.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    ch.setFormatter(formatter)
+    logger.addHandler(ch)
 
-app = FastAPI()
+    # Optional: File handler
+    fh = logging.FileHandler("credit_monitor.log", encoding="utf-8")
+    fh.setLevel(logging.INFO)
+    fh.setFormatter(formatter)
+    logger.addHandler(fh)
 
+# --------------------------
+# FastAPI app
+# --------------------------
+app = FastAPI(title="OpenAI Credit Monitor")
 
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")  # load from env
+@app.get("/run-monitor")
+async def run_monitor_api():
+    logger.info("API /run-monitor hit")
+    results = await check_user_credits()
+    logger.info("API /run-monitor finished")
+    return {"status": "success", "results": results}
 
-def send_usage_alert():
-    try:
-        report = get_openai_usage(OPENAI_API_KEY)
+# --------------------------
+# Scheduler on startup
+# --------------------------
+@app.on_event("startup")
+async def startup_event():
+    logger.info("⚡ Application startup complete. Scheduler is starting...")
 
-        subject = "🔔 OpenAI API Credit Usage Alert"
-        body = f"""
-        ✅ OpenAI API Usage Report ({datetime.utcnow().date()})
+    # AsyncIOScheduler runs inside FastAPI's event loop
+    scheduler = AsyncIOScheduler()
 
-        - Today's usage: ${report['today_usage']:.2f}
-        - Monthly usage: ${report['monthly_usage']:.2f}
-        - Plan limit: ${report['total_limit']:.2f}
-        - Remaining balance: ${report['remaining_balance']:.2f}
+    # Schedule check_user_credits coroutine
+    scheduler.add_job(check_user_credits, 'interval', hours=6)  # real usage: every 6 hours
+    # For testing, you can change to every 1 minute
+    # scheduler.add_job(check_user_credits, 'interval', minutes=1)
 
-        ⚠️ Keep an eye on usage to avoid service interruptions.
-        """
-
-        send_email(subject, body)
-
-    except Exception as e:
-        send_email("🚨 API Usage Monitor Error", f"Error while fetching usage: {str(e)}")
-
-@app.get("/")
-def root():
-    return {"message": "API Credit Monitor Running"}
-
-@app.get("/test-email")
-def test_email():
-    send_alert_email("Test Alert", "This is a test email from API Credit Monitor.")
-    return {"status": "Email function executed"}
+    scheduler.start()
+    logger.info("Scheduler started. Jobs scheduled for check_user_credits.")

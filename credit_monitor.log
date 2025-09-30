@@ -1,0 +1,65 @@
+2025-09-30 21:47:11,657 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-09-30 21:47:11,659 - INFO - Added job "startup_event.<locals>.<lambda>" to job store "default"
+2025-09-30 21:47:11,660 - INFO - Scheduler started
+2025-09-30 21:51:50,254 - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-09-30 21:51:50,256 - INFO - Added job "startup_event.<locals>.<lambda>" to job store "default"
+2025-09-30 21:51:50,257 - INFO - Scheduler started
+2025-09-30 21:54:43,077 - INFO - API /run-monitor hit
+2025-09-30 21:54:45,746 - INFO - Checking user: aashiraqeel2@gmail.com
+2025-09-30 21:54:45,774 - INFO - Current remaining_credits: 3.0, last_value: 10.0, last_start_time: 1759245537
+2025-09-30 21:54:51,353 - INFO - Updated remaining_credits for aashiraqeel2@gmail.com by delta: -5.12. New balance: 8.12
+2025-09-30 21:54:53,940 - INFO - API /run-monitor finished
+2025-09-30 21:55:30,842 - INFO - API /run-monitor hit
+2025-09-30 21:55:30,894 - INFO - Checking user: aashiraqeel2@gmail.com
+2025-09-30 21:55:30,894 - INFO - Current remaining_credits: 8.11788924, last_value: 4.88211076, last_start_time: 1759245537
+2025-09-30 21:55:34,977 - INFO - No change in usage for aashiraqeel2@gmail.com. Delta: 0.00
+2025-09-30 21:55:37,742 - INFO - API /run-monitor finished
+2025-09-30 21:56:55,136 - INFO - API /run-monitor hit
+2025-09-30 21:56:55,207 - INFO - Checking user: aashiraqeel2@gmail.com
+2025-09-30 21:56:55,244 - INFO - Current remaining_credits: 8.11788924, last_value: 4.88211076, last_start_time: 1759245537
+2025-09-30 21:56:59,215 - INFO - No change in usage for aashiraqeel2@gmail.com. Delta: 0.00
+2025-09-30 21:57:02,378 - INFO - API /run-monitor finished
+2025-09-30 21:59:28,575 - INFO - API /run-monitor hit
+2025-09-30 21:59:29,786 - INFO - Checking user: aashiraqeel2@gmail.com
+2025-09-30 21:59:29,787 - INFO - Current remaining_credits: 8.11788924, last_value: 4.88211076, last_start_time: 1759245537
+2025-09-30 21:59:33,472 - INFO - No change in usage for aashiraqeel2@gmail.com. Delta: 0.00
+2025-09-30 21:59:36,138 - INFO - API /run-monitor finished
+2025-09-30 22:02:45,480 - INFO - Scheduler started. Jobs scheduled for check_user_credits.
+2025-09-30 22:02:56,595 - INFO - API /run-monitor hit
+2025-09-30 22:02:57,458 - INFO - Checking user: aashiraqeel2@gmail.com
+2025-09-30 22:02:57,459 - INFO - Current remaining_credits: 8.11788924, last_value: 4.88211076, last_start_time: 1759245537
+2025-09-30 22:03:00,865 - INFO - No change in usage for aashiraqeel2@gmail.com. Delta: 0.00
+2025-09-30 22:03:03,736 - INFO - API /run-monitor finished
+2025-09-30 22:03:25,362 - INFO - Scheduler started. Jobs scheduled for check_user_credits.
+2025-09-30 22:03:27,352 - INFO - Scheduler started. Jobs scheduled for check_user_credits.
+2025-09-30 22:03:36,462 - INFO - API /run-monitor hit
+2025-09-30 22:03:40,570 - INFO - Checking user: aashiraqeel2@gmail.com
+2025-09-30 22:03:40,570 - INFO - Current remaining_credits: 8.11788924, last_value: 4.88211076, last_start_time: 1759245537
+2025-09-30 22:03:46,870 - INFO - No change in usage for aashiraqeel2@gmail.com. Delta: 0.00
+2025-09-30 22:03:50,542 - INFO - API /run-monitor finished
+2025-09-30 22:04:28,484 - INFO - Checking user: aashiraqeel2@gmail.com
+2025-09-30 22:04:28,485 - INFO - Current remaining_credits: 8.11788924, last_value: 4.88211076, last_start_time: 1759245537
+2025-09-30 22:04:40,101 - INFO - No change in usage for aashiraqeel2@gmail.com. Delta: 0.00
+2025-09-30 22:05:27,519 - INFO - Checking user: aashiraqeel2@gmail.com
+2025-09-30 22:05:27,519 - INFO - Current remaining_credits: 8.11788924, last_value: 4.88211076, last_start_time: 1759245537
+2025-09-30 22:05:38,005 - INFO - No change in usage for aashiraqeel2@gmail.com. Delta: 0.00
+2025-09-30 22:06:28,524 - INFO - Checking user: aashiraqeel2@gmail.com
+2025-09-30 22:06:28,525 - INFO - Current remaining_credits: 8.11788924, last_value: 4.88211076, last_start_time: 1759245537
+2025-09-30 22:06:39,894 - INFO - No change in usage for aashiraqeel2@gmail.com. Delta: 0.00
+2025-09-30 22:07:05,910 - INFO - Scheduler started. Jobs scheduled for check_user_credits.
+2025-09-30 22:07:08,120 - INFO - Scheduler started. Jobs scheduled for check_user_credits.
+2025-09-30 22:08:19,018 - INFO - Checking user: aashiraqeel2@gmail.com
+2025-09-30 22:08:19,019 - INFO - Current remaining_credits: 8.11788924, last_value: 4.88211076, last_start_time: 1759245537
+2025-09-30 22:08:25,574 - INFO - No change in usage for aashiraqeel2@gmail.com. Delta: 0.00
+2025-09-30 22:09:01,678 - INFO - ⚡ Application startup complete. Scheduler is starting...
+2025-09-30 22:09:01,703 - INFO - Scheduler started. Jobs scheduled for check_user_credits.
+2025-09-30 22:10:03,006 - INFO - Checking user: aashiraqeel2@gmail.com
+2025-09-30 22:10:03,006 - INFO - Current remaining_credits: 8.11788924, last_value: 4.88211076, last_start_time: 1759245537
+2025-09-30 22:10:06,745 - INFO - No change in usage for aashiraqeel2@gmail.com. Delta: 0.00
+2025-09-30 22:10:17,787 - INFO - ⚡ Application startup complete. Scheduler is starting...
+2025-09-30 22:10:17,793 - INFO - Scheduler started. Jobs scheduled for check_user_credits.
+2025-09-30 22:10:20,299 - INFO - ⚡ Application startup complete. Scheduler is starting...
+2025-09-30 22:10:20,306 - INFO - Scheduler started. Jobs scheduled for check_user_credits.
+2025-09-30 22:10:22,679 - INFO - ⚡ Application startup complete. Scheduler is starting...
+2025-09-30 22:10:32,713 - INFO - ⚡ Application startup complete. Scheduler is starting...
+2025-09-30 22:10:32,747 - INFO - Scheduler started. Jobs scheduled for check_user_credits.
