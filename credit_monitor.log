@@ -63,3 +63,15 @@
 2025-09-30 22:10:22,679 - INFO - ⚡ Application startup complete. Scheduler is starting...
 2025-09-30 22:10:32,713 - INFO - ⚡ Application startup complete. Scheduler is starting...
 2025-09-30 22:10:32,747 - INFO - Scheduler started. Jobs scheduled for check_user_credits.
+2025-09-30 22:47:15,635 - INFO - User 0006 balance updated to 10.0, threshold 10.0
+2025-09-30 22:47:15,640 - INFO - Started monitoring for user 0006
+2025-09-30 22:47:15,693 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-21' coro=<monitor_user_balance() done, defined at D:\credit-monitor\app\main.py:35> exception=AttributeError("'_asyncio.Future' object has no attribute 'get'")>
+Traceback (most recent call last):
+  File "D:\credit-monitor\app\main.py", line 44, in monitor_user_balance
+    remaining_balance = user.get("remaining_credits", 0)
+                        ^^^^^^^^
+AttributeError: '_asyncio.Future' object has no attribute 'get'
+2025-09-30 23:48:16,874 - ERROR - Error in check_user_credits: localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms), Timeout: 30s, Topology Description: <TopologyDescription id: 68dc2596430db8c03cd44fe6, topology_type: Unknown, servers: [<ServerDescription ('localhost', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)')>]>
+2025-09-30 23:49:17,058 - ERROR - Error in check_user_credits: localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms), Timeout: 30s, Topology Description: <TopologyDescription id: 68dc2596430db8c03cd44fe6, topology_type: Unknown, servers: [<ServerDescription ('localhost', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)')>]>
+2025-09-30 23:50:17,173 - ERROR - Error in check_user_credits: localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms), Timeout: 30s, Topology Description: <TopologyDescription id: 68dc2596430db8c03cd44fe6, topology_type: Unknown, servers: [<ServerDescription ('localhost', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)')>]>

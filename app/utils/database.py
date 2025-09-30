@@ -1,16 +1,15 @@
-# app/utils/database.py
-import os
 from motor.motor_asyncio import AsyncIOMotorClient
-from dotenv import load_dotenv
+import os
 
-load_dotenv()
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
+DB_NAME = os.getenv("DB_NAME", "credit_monitor")
 
-MONGO_URI = os.getenv("MONGO_URI") or "mongodb+srv://aqeelaashir6:KCwNBZZhEtwmnatL@cluster0.6uz7zar.mongodb.net/?retryWrites=true&w=majority"
-DB_NAME = os.getenv("DB_NAME") or "credit_monitor"
-
-# Async client
 client = AsyncIOMotorClient(MONGO_URI)
 db = client[DB_NAME]
 
-# Collection
-users_collection = db["users"]
+# ✅ Define the collections properly
+remaining_balance_collection = db["remaining_balance"]
+email_address_collection = db["email_address"]
+
+print("DEBUG - database.py loaded successfully")
+print("DEBUG - collections:", remaining_balance_collection.name, email_address_collection.name)
