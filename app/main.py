@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from app.utils.email_utils import send_alert_email
-from utils.openai_utils import get_openai_usage
+from app.utils.openai_utils import get_openai_usage
 import os
 from datetime import datetime
 
@@ -12,7 +12,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")  # load from env
 
 def send_usage_alert():
     try:
-        report = get_openai_report(OPENAI_API_KEY)
+        report = get_openai_usage(OPENAI_API_KEY)
 
         subject = "🔔 OpenAI API Credit Usage Alert"
         body = f"""
