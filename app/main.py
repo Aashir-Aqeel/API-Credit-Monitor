@@ -1,54 +1,99 @@
-from fastapi import FastAPI
-from app.services.monitor import check_user_credits
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import logging
-import sys
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from app.utils.database import remaining_balance_collection, email_address_collection
+from app.services.monitor import check_user_credits
+from app.services.monitor import run_monitor
 
-# --------------------------
-# Logger setup
-# --------------------------
-logger = logging.getLogger("main")
-logger.setLevel(logging.INFO)
-if not logger.handlers:
-    # Console handler with UTF-8 encoding
-    ch = logging.StreamHandler(sys.stdout)
-    ch.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-    ch.setFormatter(formatter)
-    logger.addHandler(ch)
 
-    # Optional: File handler
-    fh = logging.FileHandler("credit_monitor.log", encoding="utf-8")
-    fh.setLevel(logging.INFO)
-    fh.setFormatter(formatter)
-    logger.addHandler(fh)
 
-# --------------------------
+# ---------------------------------------------------------
+# Logging setup
+# ---------------------------------------------------------
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+    handlers=[logging.StreamHandler()],
+)
+logger = logging.getLogger("credit-monitor")
+
+# ---------------------------------------------------------
 # FastAPI app
-# --------------------------
-app = FastAPI(title="OpenAI Credit Monitor")
+# ---------------------------------------------------------
+app = FastAPI(title="API Credit Monitor")
 
-@app.get("/run-monitor")
-async def run_monitor_api():
-    logger.info("API /run-monitor hit")
-    results = await check_user_credits()
-    logger.info("API /run-monitor finished")
-    return {"status": "success", "results": results}
+# ---------------------------------------------------------
+# Models
+# ---------------------------------------------------------
+class BalanceInput(BaseModel):
+    remaining_balance: float
+    threshold: float
 
-# --------------------------
-# Scheduler on startup
-# --------------------------
+class EmailInput(BaseModel):
+    email: str
+
+# ---------------------------------------------------------
+# Routes
+# ---------------------------------------------------------
+@app.get("/")
+async def root():
+    return {"message": "API Credit Monitor running"}
+
+@app.post("/update-balance")
+async def update_balance(data: BalanceInput):
+    """Update remaining balance & threshold in DB"""
+    try:
+        await balance_collection.delete_many({})  # keep only one doc
+        result = await balance_collection.insert_one(
+            {"remaining_credits": data.remaining_balance, "threshold": data.threshold}
+        )
+        logger.info(f"Balance updated → {data.remaining_balance}, threshold: {data.threshold}")
+        return {"status": "success", "balance_id": str(result.inserted_id)}
+    except Exception as e:
+        logger.error(f"Error updating balance: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update balance")
+
+@app.get("/balance")
+async def get_balance():
+    """Get current balance and threshold"""
+    doc = await balance_collection.find_one()
+    if not doc:
+        raise HTTPException(status_code=404, detail="No balance found")
+    return {
+        "remaining_balance": doc.get("remaining_credits", 0),
+        "threshold": doc.get("threshold", 0),
+    }
+
+@app.post("/add-email")
+async def add_email(data: EmailInput):
+    """Add an email to receive alerts"""
+    try:
+        result = await emails_collection.insert_one({"email": data.email})
+        logger.info(f"Email added for alerts → {data.email}")
+        return {"status": "success", "email_id": str(result.inserted_id)}
+    except Exception as e:
+        logger.error(f"Error adding email: {e}")
+        raise HTTPException(status_code=500, detail="Failed to add email")
+
+@app.get("/emails")
+async def list_emails():
+    """List all alert emails"""
+    emails = await emails_collection.find().to_list(length=100)
+    return {"emails": [doc["email"] for doc in emails]}
+
+# ---------------------------------------------------------
+# Scheduler setup
+# ---------------------------------------------------------
+scheduler = AsyncIOScheduler()
+
 @app.on_event("startup")
-async def startup_event():
-    logger.info("⚡ Application startup complete. Scheduler is starting...")
-
-    # AsyncIOScheduler runs inside FastAPI's event loop
-    scheduler = AsyncIOScheduler()
-
-    # Schedule check_user_credits coroutine
-    scheduler.add_job(check_user_credits, 'interval', hours=6)  # real usage: every 6 hours
-    # For testing, you can change to every 1 minute
-    # scheduler.add_job(check_user_credits, 'interval', minutes=1)
-
+async def start_scheduler():
+    scheduler.add_job(run_monitor, "interval", minutes=1)  # 🔥 1 minute for testing
     scheduler.start()
-    logger.info("Scheduler started. Jobs scheduled for check_user_credits.")
+    logger.info("Scheduler started (runs every 1 minute for testing)")
+
+@app.on_event("shutdown")
+async def shutdown_scheduler():
+    scheduler.shutdown()
+    logger.info("Scheduler shutdown")
